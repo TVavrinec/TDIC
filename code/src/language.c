@@ -122,6 +122,7 @@ readed_number_t interpretArithmeticsFunction(char *example)
     else
     {
         x = loadNumber(example);
+        if((example[x.length]=='*')||(example[x.length]=='/')) x = combineNumber(x, loadNumber(&example[x.length+1]),example[x.length]);
     }
     readed_number_t out = combineNumber(x,interpretArithmeticsFunction(&example[x.length+1]), example[x.length]);
     return out;
