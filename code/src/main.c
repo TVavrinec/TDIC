@@ -11,9 +11,14 @@
 
 int main( void)
 {
-	char *buffer = (char*)malloc(sizeof(char)*BUFFERSIZE);
-	readLine(buffer);
-	interpretLine(buffer);
-	free(buffer);
+	album_t *album_list = loadFile("/home/mtar/Documents/skola/s2/PC2M/C10/output/zadani10_databaze.csv");
+	printfAllAlbums(album_list);
+	while (true)
+	{
+		char *buffer = (char*)malloc(sizeof(char)*BUFFERSIZE);
+		int x = readLine(buffer);
+		interpretLine(&buffer[x]);
+		free(buffer);
+	}
   	return 0;
 }

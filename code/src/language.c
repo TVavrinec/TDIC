@@ -1,12 +1,7 @@
 #include "language.h"
 
 // private ----------------------------------------------------------------
-
-bool isSymbolValid(char x)
-{
-    //          numbr           big latter      small latter
-    return (((x>47)&&(x<58))||((x>65)&&(x<91))||((x>96)&&(x<123))||(x=='+')||(x=='-')||(x=='*')||(x=='/')||(x=='%')||(x=='(')||(x==')')||(x==' ')||(x=='.')) ? true : false;
-}
+// aritmetics -------------------------------------------------------------
 
 bool isNumber(char x)
 {
@@ -20,21 +15,18 @@ bool isOperator(char x)
 
 bool isMathSim(char x)
 {
-    return ((x=='+')||(x=='-')||(x=='*')||(x=='/')||(x=='%')||((x>47)&&(x<58))||(x==')')||(x=='(')||(x=='.')) ? true : false;
+    return (isOperator(x)||isNumber(x)||(x==')')||(x=='(')) ? true : false;
 }
 
 bool isLatter(char x)
 {
-    return ((x>65)&&(x<91)) ? true : false;
+    return (((x>64)&&(x<91))||((x>96)&&(x<123))) ? true : false;
 }
 
-interpret_function_t *newFunction()
+bool isSymbolValid(char x)
 {
-    interpret_function_t *function = (interpret_function_t *)malloc(sizeof(interpret_function_t));
-    function->argument = NULL;
-    function->function = -1;
-    function->function_type = -1;
-    return function;
+    //          numbr           big latter      small latter
+    return (isNumber(x)||isOperator(x)||isMathSim(x)||isLatter(x)||(x==' ')||(x=='_')||(x=='-')||(x==',')) ? true : false;
 }
 
 void sintaxError(char *x)
@@ -42,27 +34,34 @@ void sintaxError(char *x)
     printf("bed sintax in %s\n", x);
 }
 
-readed_number_t loadNumber(char *number)
+readed_number_t laadBracket(char *bracket)
 {
-    readed_number_t out = {0,0};
-    char *x = (char *)malloc(sizeof(char)*24);
-    int a = 0;
-    if((number[a]=='-')||(number[a]=='+')) {x[a] = number[a]; a++;}
-    if(number[a]==';') {return out;}
-    for (; isNumber(number[a]); a++)
+    char *x = (char *)malloc(sizeof(char)*BUFFERSIZE);
+    int a = 1;
+    int n = 0;
+    while(!((bracket[a]==')')&&(n<1)))
     {
-        if((a>24)||!isMathSim(number[a]))
-        {
-            x[25] = '\0';
-            sintaxError(x);
-            return out;
-        }
-        x[a] = number[a];
+        if(bracket[a]=='(') n++;
+        else if(bracket[a]==')') n--;
+        x[a-1]=bracket[a];
+        a++;
     }
-    x[a] = '\0';
-    out.length = a;
-    out.value = atof(x);
-    free(x);
+    x[a-1]=';';
+    x[a]=';';
+    readed_number_t out = interpretArithmeticsFunction(x);
+    out.length +=2;
+    return out;
+}
+
+readed_number_t loadAnother(char *another)
+{
+    readed_number_t out;
+    out.length = 0;
+    out.value = 0;
+    if(isNumber(another[0])||(another[0]=='+')||(another[0]=='-')) return loadNumber(another);
+    if(another[0]=='(') return laadBracket(another);
+    if(another[0]==';') return out;
+    sintaxError(another);
     return out;
 }
 
@@ -73,7 +72,7 @@ readed_number_t combineNumber(readed_number_t a, readed_number_t b, char marker)
     {
     case '+':
         c.value = a.value + b.value;
-        c.length = a.length + b.length;
+        c.length = a.length + b.length + 1;
     break;
     case '-':
         c.value = a.value - b.value;
@@ -121,22 +120,69 @@ readed_number_t interpretArithmeticsFunction(char *example)
     }
     else
     {
-        x = loadNumber(example);
-        if((example[x.length]=='*')||(example[x.length]=='/')) x = combineNumber(x, loadNumber(&example[x.length+1]),example[x.length]);
+        x = loadAnother(example);
+        if((example[x.length]=='*')||(example[x.length]=='/')) x = combineNumber(x, loadAnother(&example[x.length+1]),example[x.length]);
     }
     readed_number_t out = combineNumber(x,interpretArithmeticsFunction(&example[x.length+1]), example[x.length]);
     return out;
 }
 
-// public  ----------------------------------------------------------------
+// database ---------------------------------------------------------------
 
-void readLine(char *buffer)
+bool compareText(char *A, char *B, int A_length)
 {
+    if(B[A_length]!='\0') return false;
+    for (int a = 0; a < A_length; a++)
+    {
+        if(A[a] != B[a]) return false;
+    }
+    return true;
+}
+
+void doDatabaseFunction(char *command, int command_length)
+{
+    if(compareText(command, "loadFile", command_length)) loadFile_i(&command[command_length+1]);
+    if(compareText(command, "delAlbum", command_length)) delAlbum_i(&command[command_length+1]);
+    if(compareText(command, "saveAlbumsList", command_length)) saveAlbumsList_i(&command[command_length+1]);
+    if(compareText(command, "printfAllAlbums", command_length)) printfAllAlbums_i(&command[command_length+1]);
+    if(compareText(command, "addNewAlbum", command_length)) addNewAlbum_i(&command[command_length+1]);
+}
+
+
+// public  ----------------------------------------------------------------
+readed_number_t loadNumber(char *number)
+{
+    readed_number_t out = {0,0};
+    char *x = (char *)malloc(sizeof(char)*24);
+    int a = 0;
+    if((number[a]=='-')||(number[a]=='+')) {x[a] = number[a]; a++;}
+    if(number[a]==';') {return out;}
+    for (; isNumber(number[a]); a++)
+    {
+        if((a>24)||!isMathSim(number[a]))
+        {
+            x[25] = '\0';
+            sintaxError(x);
+            return out;
+        }
+        x[a] = number[a];
+    }
+    x[a] = '\0';
+    out.length = a;
+    out.value = atof(x);
+    free(x);
+    return out;
+}
+
+int readLine(char *buffer)
+{
+
     int a = 0;
     for (a = 0; (a < BUFFERSIZE)&&(buffer[a-1]!=10); a++)
     {
         scanf("%c", &buffer[a]);
     }
+    buffer[a] = '\0';
     for (a = 0; (a < BUFFERSIZE)&&(buffer[a]!=10); a++)
     {
         if(!isSymbolValid(buffer[a])) 
@@ -147,37 +193,28 @@ void readLine(char *buffer)
     }
     buffer[a] = ';';
     buffer[a+1] = ';';
+    for (a = 0; buffer[a]==' '; a++) {}
+    return a;
 }
 
 bool interpretLine(char *line)
 {
-    for(int a = 0; (line[a] != ';')&&(a<BUFFERSIZE); a++)
+    if(isMathSim(line[0])) 
     {
-        if(line[a] == ' ') continue;
-        a += interpretWord(&(line[a]));
+        readed_number_t math = interpretArithmeticsFunction(line);
+        printf("\n%4.2f\n",math.value);
+        return math.length-1;
+    }
+    else if(isLatter(line[0])) 
+    {
+        interpretDatabaseFunction(line);
     }
     return true;
 }
 
-int interpretWord(char *word)
+void interpretDatabaseFunction(char *command)
 {
-    int a = 0;
-    interpret_function_t *function = newFunction();
-    char *x = (char *)malloc(sizeof(char)*32);
-    if(isMathSim(word[a])) 
-    {
-        function->function_type = aritmetics;
-        readed_number_t math = interpretArithmeticsFunction(word);
-        printf("\n%4.2f\n",math.value);
-        free(x);
-        free(function);
-        return math.length-1;
-    }
-    else if(isLatter(word[a])) 
-    {
-        function->function_type = clasics_function; 
-    }
-    free(x);
-    free(function);
-    return a-1;
+    int command_length;
+    for (command_length = 0; !((command[command_length] == ' ')||(command[command_length] == ';')); command_length++){}
+    doDatabaseFunction(command, command_length);
 }

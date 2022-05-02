@@ -41,7 +41,7 @@ enum album_faktor
 album_t *loadFile(char *file);
 bool saveAlbumsList(album_t *album, char *file_path);
 
-album_t *addNewAlbum(album_t *prev, char *name, char *interpreter, int year, char *genre, float score);
+album_t *addNewAlbum(album_t *album, char *name, char *interpreter, int year, char *genre, float score);
 void delAlbum(album_t *album);
 
 album_t *switchAlbums(album_t *a, album_t *b);
@@ -51,3 +51,5 @@ void printfAlbum(album_t *album);
 void printfAllAlbums(album_t *album);
 
 int getAlbumCount(album_t *album);
+
+album_t *getAlbum(album_t *album_list, char *name);
