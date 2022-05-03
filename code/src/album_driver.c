@@ -209,12 +209,18 @@ void printfAlbum(album_t *album)
 
 void printfAllAlbums(album_t *album)
 {
+    printf("\033[4m                                                                                                      \n");
 	while(album->next != NULL)
 	{
-		printf("%36s - %25s - %4d - %20s - %5.2f\n", album->name, album->interpreter, album->year, album->genre, album->score);
+		printf("%36s | %25s | %4d | %20s |", album->name, album->interpreter, album->year, album->genre);
+		(album->score<3) ? printf("\033[0;33m\033[4m %5.2f\n", album->score) : (album->score<8)? printf("\033[0;32m\033[4m %5.2f\n", album->score) : printf("\033[0;31m\033[4m %5.2f\n", album->score);
+		printf("\033[0;37m\033[4m");
 		album = album->next;
 	}
-	printf("%36s - %25s - %4d - %20s - %5.2f\n\n", album->name, album->interpreter, album->year, album->genre, album->score);
+	printf("%36s | %25s | %4d | %20s |", album->name, album->interpreter, album->year, album->genre);
+	(album->score<3) ? printf("\033[0;33m\033[4m %5.2f\n\n", album->score) : (album->score<8)? printf("\033[0;32m\033[4m %5.2f\n", album->score) : printf("\033[0;31m\033[4m %5.2f\n", album->score);
+	printf("\033[0;37m");
+    printf("\033[0m");
 }
 
 

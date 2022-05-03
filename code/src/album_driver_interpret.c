@@ -5,12 +5,44 @@
 
 album_t *album_list;
 
+// private ----------------------------------------------------------------
+bool readWold(char *buffer, char *word, int *length)
+{
+    int a = 0;
+    for (; (buffer[a] != ' ')&&(a < SMALL_BUFFER); a++) 
+    {    
+        word[a] = buffer[a];
+    }
+    word[a] = '\0';
+    *length = a;
+}
+
+int getComperFaktor(char *compare_faktor)
+{
+    if(strcmp(compare_faktor, "name")) return albumName;
+    if(strcmp(compare_faktor, "interpreter")) return albumInterpreter;
+    if(strcmp(compare_faktor, "year")) return albumYear;
+    if(strcmp(compare_faktor, "genre")) return albumGenre;
+    if(strcmp(compare_faktor, "score")) return albumScore;
+    return -1;
+}
+
+bool getComperDirectory(char *compare_faktor)
+{
+    if(strcmp(compare_faktor, "dir-down")) return false;
+    return true;
+}
+// public  ----------------------------------------------------------------
 void loadFile_i(char *file_path)
 {
     int a;
     for(a = 0; file_path[a]!=';'; a++){}
     file_path[a] = '\0';
-    album_list = loadFile(file_path);
+    if(strcmp(file_path," ."))
+        album_list = loadFile("output/zadani10_databaze.csv");
+    else
+        album_list = loadFile(file_path);
+    if(album_list!=NULL) printfAllAlbums(album_list);
 }
 
 void delAlbum_i(char *album_name)
@@ -69,4 +101,27 @@ void addNewAlbum_i(char *album)
     score = x.value;
     a += x.length+1;
     addNewAlbum(album_list, name, interpreter, year, genre, score);
+    free(name);
+    free(interpreter);
+    free(genre);
+}
+
+void sortAlbums_i(char *compare_faktor_and_sort_dir)
+{
+    char *compare_faktor = (char *)malloc(sizeof(char)*SMALL_BUFFER);
+    char *sort_dir = (char *)malloc(sizeof(char)*SMALL_BUFFER);
+    int CFASD_position = 0;
+    int b = 0;
+    for (CFASD_position = 0; (compare_faktor_and_sort_dir[CFASD_position] != ' ')&&(CFASD_position < SMALL_BUFFER); CFASD_position++) compare_faktor[CFASD_position] = compare_faktor_and_sort_dir[CFASD_position];
+    compare_faktor[CFASD_position] = '\0';
+    CFASD_position++;
+    for (b = 0; (compare_faktor_and_sort_dir[CFASD_position] != ' ')&&(b < SMALL_BUFFER); b++) 
+    {
+        sort_dir[b] = compare_faktor_and_sort_dir[CFASD_position];
+        CFASD_position++;
+    }
+    sort_dir[b] = '\0';
+    sortAlbums(album_list, getComperFaktor(compare_faktor), getComperDirectory(sort_dir));
+    free(sort_dir);
+    free(compare_faktor);
 }

@@ -31,7 +31,9 @@ bool isSymbolValid(char x)
 
 void sintaxError(char *x)
 {
-    printf("bed sintax in %s\n", x);
+    printf("\033[0;31m");
+    printf("bad syntax in %s\n", x);
+    printf("\033[0;37m");
 }
 
 readed_number_t laadBracket(char *bracket)
@@ -141,11 +143,12 @@ bool compareText(char *A, char *B, int A_length)
 
 void doDatabaseFunction(char *command, int command_length)
 {
-    if(compareText(command, "loadFile", command_length)) loadFile_i(&command[command_length+1]);
-    if(compareText(command, "delAlbum", command_length)) delAlbum_i(&command[command_length+1]);
-    if(compareText(command, "saveAlbumsList", command_length)) saveAlbumsList_i(&command[command_length+1]);
-    if(compareText(command, "printfAllAlbums", command_length)) printfAllAlbums_i(&command[command_length+1]);
-    if(compareText(command, "addNewAlbum", command_length)) addNewAlbum_i(&command[command_length+1]);
+    if(compareText(command, "load-file"      , command_length)) loadFile_i(&command[command_length+1]);
+    if(compareText(command, "del-album"      , command_length)) delAlbum_i(&command[command_length+1]);
+    if(compareText(command, "save-album-list", command_length)) saveAlbumsList_i(&command[command_length+1]);
+    if(compareText(command, "list"           , command_length)) printfAllAlbums_i(&command[command_length+1]);
+    if(compareText(command, "add-album"      , command_length)) addNewAlbum_i(&command[command_length+1]);
+    if(compareText(command, "sort-albums"    , command_length)) sortAlbums_i(&command[command_length+1]);
 }
 
 
@@ -176,6 +179,7 @@ readed_number_t loadNumber(char *number)
 
 int readLine(char *buffer)
 {
+    printf("\033[0;32m\033[1m\033[5m--> \033[0m\033[0;35m");
 
     int a = 0;
     for (a = 0; (a < BUFFERSIZE)&&(buffer[a-1]!=10); a++)
@@ -191,6 +195,7 @@ int readLine(char *buffer)
             buffer[0] = ';';
         }
     }
+    printf("\033[0;37m");
     buffer[a] = ';';
     buffer[a+1] = ';';
     for (a = 0; buffer[a]==' '; a++) {}

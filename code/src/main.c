@@ -11,8 +11,6 @@
 
 int main( void)
 {
-	album_t *album_list = loadFile("/home/mtar/Documents/skola/s2/PC2M/C10/output/zadani10_databaze.csv");
-	printfAllAlbums(album_list);
 	while (true)
 	{
 		char *buffer = (char*)malloc(sizeof(char)*BUFFERSIZE);
