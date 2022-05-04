@@ -19,11 +19,11 @@ void delAlbumFromList(album_list_t *album)
 
 bool compareAlbumFactor(album_t *album, album_compare_prototype_t *compare_prototype)
 {
-    if((compare_prototype->name[0] != '\0')&&(strcmp(compare_prototype->name, album->name))) return false;
-    if((compare_prototype->interpreter[0] != '\0')&&(strcmp(compare_prototype->interpreter, album->interpreter))) return false;
-    if((compare_prototype->genre[0] != '\0')&&(strcmp(compare_prototype->genre, album->genre))) return false;
-    if((compare_prototype->year != -1)&&(compare_prototype->year != album->year)) return false;
-    if((compare_prototype->score != -1)&&(compare_prototype->score != album->score)) return false;
+    if((compare_prototype->name[0]          != '\0')&&(strcmp(compare_prototype->name, album->name)))               return false;
+    if((compare_prototype->interpreter[0]   != '\0')&&(strcmp(compare_prototype->interpreter, album->interpreter))) return false;
+    if((compare_prototype->genre[0]         != '\0')&&(strcmp(compare_prototype->genre, album->genre)))             return false;
+    if((compare_prototype->year             != -1)&&(compare_prototype->year  != album->year))                      return false;
+    if((compare_prototype->score            != -1)&&(compare_prototype->score != album->score))                     return false;
     return true;
 }
 
@@ -48,16 +48,22 @@ void printAlbumList(album_list_t *list)
 {
     if(list == NULL)
     {
-        printf("filtered album list is empty\n");
+        printf("\033[0;31mfiltered album list is empty\033[0;37m\n");
         return;
     }
-    printf("filtered album list:\n");
+    printf("\033[0;33mfiltered album list:\033[0;37m\n");
+    printf("\033[4m                                                                                                      \n");
    	while(list->next != NULL)
 	{
-        printf("--> %32s - %25s - %4d - %20s - %5.2f\n", list->juicy_kernel->name, list->juicy_kernel->interpreter, list->juicy_kernel->year, list->juicy_kernel->genre, list->juicy_kernel->score);
+  		printf("%36s | %25s | %4d | %20s |", list->juicy_kernel->name, list->juicy_kernel->interpreter, list->juicy_kernel->year, list->juicy_kernel->genre);
+		(list->juicy_kernel->score<3) ? printf("\033[0;33m\033[4m %5.2f\n", list->juicy_kernel->score) : (list->juicy_kernel->score<8)? printf("\033[0;32m\033[4m %5.2f\n", list->juicy_kernel->score) : printf("\033[0;31m\033[4m %5.2f\n", list->juicy_kernel->score);
+		printf("\033[0;37m\033[4m");
         list = list->next;
 	}
-	printf("--> %32s - %25s - %4d - %20s - %5.2f\n", list->juicy_kernel->name, list->juicy_kernel->interpreter, list->juicy_kernel->year, list->juicy_kernel->genre, list->juicy_kernel->score);
+	printf("%36s | %25s | %4d | %20s |", list->juicy_kernel->name, list->juicy_kernel->interpreter, list->juicy_kernel->year, list->juicy_kernel->genre);
+	(list->juicy_kernel->score<3) ? printf("\033[0;33m\033[4m %5.2f\n", list->juicy_kernel->score) : (list->juicy_kernel->score<8)? printf("\033[0;32m\033[4m %5.2f\n", list->juicy_kernel->score) : printf("\033[0;31m\033[4m %5.2f\n", list->juicy_kernel->score);
+	printf("\033[0;37m");
+    printf("\033[0m");
 }
 
 bool saveFilteredAlbumList(album_list_t *list, char *file_path)

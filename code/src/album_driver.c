@@ -113,6 +113,7 @@ album_t *addNewAlbum(album_t *album, char *name, char *interpreter, int year, ch
 
 void delAlbum(album_t *album)
 {
+	if(album == NULL) return;
 	if(album->prev != NULL) album->prev->next = album->next;
 	if(album->next != NULL)	album->next->prev = album->prev;
 	free(album);
@@ -146,7 +147,7 @@ album_t *switchAlbums(album_t *a, album_t *b)
 
 int getAlbumCount(album_t *album)
 {
-	int count = 0;
+	int count = 1;
 	while(album->next != NULL)
 	{
 		count++;
@@ -204,7 +205,8 @@ bool saveAlbumsList(album_t *album, char *file_path)
 
 void printfAlbum(album_t *album)
 {
-	printf("%36s - %25s - %4d - %20s - %5.2f\n", album->name, album->interpreter, album->year, album->genre, album->score);
+	printf("\033[4m%36s - %25s - %4d - %20s -", album->name, album->interpreter, album->year, album->genre);
+	(album->score<3) ? printf("\033[0;33m\033[4m %5.2f\n\n", album->score) : (album->score<8)? printf("\033[0;32m\033[4m %5.2f\n", album->score) : printf("\033[0;31m\033[4m %5.2f\n", album->score);
 }
 
 void printfAllAlbums(album_t *album)

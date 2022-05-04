@@ -4,6 +4,7 @@
         "auxiliaryfunctions.h": "c",
         "stdbool.h": "c",
         "string.h": "c",
-        "cstdio": "c"
+        "cstdio": "c",
+        "typeinfo": "c"
     }
 }

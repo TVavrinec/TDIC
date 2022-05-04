@@ -33,7 +33,7 @@ void sintaxError(char *x)
 {
     printf("\033[0;31m");
     printf("bad syntax in %s\n", x);
-    printf("\033[0;37m");
+    printf("\033[0;37loadm");
 }
 
 readed_number_t laadBracket(char *bracket)
@@ -143,12 +143,18 @@ bool compareText(char *A, char *B, int A_length)
 
 void doDatabaseFunction(char *command, int command_length)
 {
-    if(compareText(command, "load-file"      , command_length)) loadFile_i(&command[command_length+1]);
-    if(compareText(command, "del-album"      , command_length)) delAlbum_i(&command[command_length+1]);
-    if(compareText(command, "save-album-list", command_length)) saveAlbumsList_i(&command[command_length+1]);
-    if(compareText(command, "list"           , command_length)) printfAllAlbums_i(&command[command_length+1]);
-    if(compareText(command, "add-album"      , command_length)) addNewAlbum_i(&command[command_length+1]);
-    if(compareText(command, "sort-albums"    , command_length)) sortAlbums_i(&command[command_length+1]);
+    if(compareText(command, "load-file"      , command_length)) return loadFile_i           (&command[command_length+1]);
+    if(compareText(command, "del-album"      , command_length)) return delAlbum_i           (&command[command_length+1]);
+    if(compareText(command, "save-album-list", command_length)) return saveAlbumsList_i     (&command[command_length+1]);
+    if(compareText(command, "list"           , command_length)) return printfAllAlbums_i    (&command[command_length+1]);
+    if(compareText(command, "add-album"      , command_length)) return addNewAlbum_i        (&command[command_length+1]);
+    if(compareText(command, "sort-albums"    , command_length)) return sortAlbums_i         (&command[command_length+1]);
+    if(compareText(command, "album-count"    , command_length)) return getAlbumCount_i      (&command[command_length+1]);
+    if(compareText(command, "album"          , command_length)) return getAlbum_i           (&command[command_length+1]);
+    if(compareText(command, "filter-album"   , command_length)) return getAlbumSortedList_i (&command[command_length+1]);
+    printf("\033[0;31m");
+    printf("unknown function\n");
+    printf("\033[0;37m");
 }
 
 
