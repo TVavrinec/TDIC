@@ -22,17 +22,17 @@ Pokud zadáte funkci, která není definovaná, vypíše se \"unknown function\"
 
 |název funkce v konzoly                             | název funkce uvnitř programu|
 |---------------------------------------------------|-----------------------------|
-|load-file $<$file\_path$>$                         | loadFile\_i                 |  
+|load-file <file\_path>                             | loadFile\_i                 |  
 |del-album                                          | delAlbum\_i                 |
-|save-album-list $<$file\_path$>$                   | saveAlbumsList\_i           |  
+|save-album-list <file\_path$>                      | saveAlbumsList\_i           |  
 |list                                               | printfAllAlbums\_i          |  
-|add-album $<$album data$>$                         | addNewAlbum\_i              |
-|sort-albums $<$compare\_faktor$>$ $<$sort\_dir$>$  | sortAlbums\_i               |   
+|add-album <album data>                             | addNewAlbum\_i              |
+|sort-albums <compare\_faktor$> <sort\_dir$>        | sortAlbums\_i               |   
 |album-count                                        | getAlbumCount\_i            |  
-|album $<$name$>$                                   | getAlbum\_i                 |
-|filter-album $<$filter seting$>$                   | getAlbumSortedList\_i       |
-|save-filter $<$file\_path$>$                       | saveFilteredAlbumList\_i    |  
-|change-album $<$name$>$ $<$changing param$>$       | changeAlbumRecord           |      
+|album <name>                                       | getAlbum\_i                 |
+|filter-album <filter seting>                       | getAlbumSortedList\_i       |
+|save-filter <file\_path>                           | saveFilteredAlbumList\_i    |  
+|change-album <name> <changing param>               | changeAlbumRecord           |      
 |print-filter                                       | printFilteredAlbumList\_i   |
 
 Popis databázových terminálových funkcí
