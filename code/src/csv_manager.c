@@ -40,7 +40,7 @@ cell_t readFileCell(FILE *file)
     switch (sim)
     {
         case ';'  :call.index = normal ; break;
-        case 13 :call.index = endLine; fgetc(file); break;
+        case 13   :call.index = endLine; fgetc(file); break;
         case EOF  :call.index = endFile; break;
         default: break;
     }
@@ -52,8 +52,8 @@ FILE *openFile(char *file_path, char *mode)
 	FILE *file = fopen(file_path, mode);
     if (file == NULL)
     {
-        printf("AAAAAAAAAAaaaaaaaa konec sveta neotevrel se mi soubor %s  aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", file_path);
-        return 0;
+        printf("\033[0;31m           Error!!! the file \"%s\" does not exist or is not readable\033[0;37m\n", file_path);
+        return NULL;
     }
     return file;
 }

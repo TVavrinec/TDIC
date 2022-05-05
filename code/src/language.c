@@ -36,7 +36,7 @@ void sintaxError(char *x)
     printf("\033[0;37loadm");
 }
 
-readed_number_t laadBracket(char *bracket)
+readed_number_t loadBracket(char *bracket)
 {
     char *x = (char *)malloc(sizeof(char)*BUFFERSIZE);
     int a = 1;
@@ -61,7 +61,7 @@ readed_number_t loadAnother(char *another)
     out.length = 0;
     out.value = 0;
     if(isNumber(another[0])||(another[0]=='+')||(another[0]=='-')) return loadNumber(another);
-    if(another[0]=='(') return laadBracket(another);
+    if(another[0]=='(') return loadBracket(another);
     if(another[0]==';') return out;
     sintaxError(another);
     return out;
@@ -143,15 +143,19 @@ bool compareText(char *A, char *B, int A_length)
 
 void doDatabaseFunction(char *command, int command_length)
 {
-    if(compareText(command, "load-file"      , command_length)) return loadFile_i           (&command[command_length+1]);
-    if(compareText(command, "del-album"      , command_length)) return delAlbum_i           (&command[command_length+1]);
-    if(compareText(command, "save-album-list", command_length)) return saveAlbumsList_i     (&command[command_length+1]);
-    if(compareText(command, "list"           , command_length)) return printfAllAlbums_i    (&command[command_length+1]);
-    if(compareText(command, "add-album"      , command_length)) return addNewAlbum_i        (&command[command_length+1]);
-    if(compareText(command, "sort-albums"    , command_length)) return sortAlbums_i         (&command[command_length+1]);
-    if(compareText(command, "album-count"    , command_length)) return getAlbumCount_i      (&command[command_length+1]);
-    if(compareText(command, "album"          , command_length)) return getAlbum_i           (&command[command_length+1]);
-    if(compareText(command, "filter-album"   , command_length)) return getAlbumSortedList_i (&command[command_length+1]);
+    if(compareText(command, "load-file"      , command_length)) return loadFile_i               (&command[command_length+1]);
+    if(compareText(command, "del-album"      , command_length)) return delAlbum_i               (&command[command_length+1]);
+    if(compareText(command, "save-album-list", command_length)) return saveAlbumsList_i         (&command[command_length+1]);
+    if(compareText(command, "list"           , command_length)) return printfAllAlbums_i        (&command[command_length+1]);
+    if(compareText(command, "add-album"      , command_length)) return addNewAlbum_i            (&command[command_length+1]);
+    if(compareText(command, "sort-albums"    , command_length)) return sortAlbums_i             (&command[command_length+1]);
+    if(compareText(command, "album-count"    , command_length)) return getAlbumCount_i          (&command[command_length+1]);
+    if(compareText(command, "album"          , command_length)) return getAlbum_i               (&command[command_length+1]);
+    if(compareText(command, "filter-album"   , command_length)) return getAlbumSortedList_i     (&command[command_length+1]);
+    if(compareText(command, "save-filter"    , command_length)) return saveFilteredAlbumList_i  (&command[command_length+1]);
+    if(compareText(command, "change-album"   , command_length)) return changeAlbumRecord        (&command[command_length+1]);
+    if(compareText(command, "print-filter"   , command_length)) return printFilteredAlbumList_i (&command[command_length+1]);
+
     printf("\033[0;31m");
     printf("unknown function\n");
     printf("\033[0;37m");

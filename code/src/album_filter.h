@@ -25,15 +25,30 @@ typedef struct album_compare_prototype_t
 
 //public
 
+/*
+	add a new album to a virtual album list.
+	the virtual album list is only a list of pointier to album in album list composite from album_t structs
+*/
 album_list_t *addNewAlbumToList(album_list_t *prev, album_t *new_album);
+
+/*
+    remove album on address "album" from his virtual album list and deleted it
+*/
 void delAlbumFromList(album_list_t *album);
 
+/*
+	filter album corresponding with "album_prototype"
+	if some text value is not important write in '\0'
+	if some number value is not important write in -1
+*/
 album_list_t *getAlbumSortedList(album_t *album_list, album_compare_prototype_t *album_prototype);
 
+/*
+	print all album in virtual album list
+*/
 void printFilteredAlbumList(album_list_t *list);
-bool saveFilteredAlbumList(album_list_t *list, char *file_path);
-void printAlbumList(album_list_t *list);
 
-// album_list_t *giveListInterpreterAlbums(album_t *album_list, char interpreter[20]);
-// album_list_t *giveListGenreAlbums(album_t *album_list, char genre[20]);
-// album_list_t *giveListYearAlbums(album_t *album_list, int year);
+/*
+    save all albums in virtual album list to file on address "file_path"
+*/
+bool saveFilteredAlbumList(album_list_t *list, char *file_path);

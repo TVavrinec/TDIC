@@ -21,11 +21,11 @@ bool readWold(char *buffer, char *word, int *length)
 
 int getComperFaktor(char *compare_faktor)
 {
-    if(!strcmp(compare_faktor, "name")) return albumName;
+    if(!strcmp(compare_faktor, "name"       )) return albumName;
     if(!strcmp(compare_faktor, "interpreter")) return albumInterpreter;
-    if(!strcmp(compare_faktor, "year")) return albumYear;
-    if(!strcmp(compare_faktor, "genre")) return albumGenre;
-    if(!strcmp(compare_faktor, "score")) return albumScore;
+    if(!strcmp(compare_faktor, "year"       )) return albumYear;
+    if(!strcmp(compare_faktor, "genre"      )) return albumGenre;
+    if(!strcmp(compare_faktor, "score"      )) return albumScore;
     return -1;
 }
 
@@ -40,7 +40,7 @@ void loadFile_i(char *file_path)
     int a;
     for(a = 0; file_path[a]!=';'; a++){}
     file_path[a] = '\0';
-    if(strcmp(file_path," ."))
+    if(!strcmp(file_path,"."))
         album_list = loadFile("output/album_list.csv");
     else
         album_list = loadFile(file_path);
@@ -96,13 +96,13 @@ void addNewAlbum_i(char *album)
     free(genre);
 }
 
-void sortAlbums_i(char *compare_faktor_and_sort_dir)
+void sortAlbums_i(char *compare_factor_and_sort_dir)
 {
     char *compare_faktor = (char *)malloc(sizeof(char)*SMALL_BUFFER);
     char *sort_dir = (char *)malloc(sizeof(char)*SMALL_BUFFER);
     int CFASD_position = 0;
-    readWold(&compare_faktor_and_sort_dir[CFASD_position], compare_faktor, &CFASD_position);
-    readWold(&compare_faktor_and_sort_dir[CFASD_position], sort_dir,       &CFASD_position);
+    readWold(&compare_factor_and_sort_dir[CFASD_position], compare_faktor, &CFASD_position);
+    readWold(&compare_factor_and_sort_dir[CFASD_position], sort_dir,       &CFASD_position);
     album_list = sortAlbums(album_list, getComperFaktor(compare_faktor), getComperDirectory(sort_dir));
     printfAllAlbums(album_list);
     free(sort_dir);
@@ -145,7 +145,7 @@ void getAlbumSortedList_i(char *album_prototype)
     if(score      [0]!='-') filter_prototype.score = atof(score)             ; else filter_prototype.score          = -1;
 
     album_filtered_list = getAlbumSortedList(album_list, &filter_prototype);
-    printAlbumList(album_filtered_list);
+    printFilteredAlbumList(album_filtered_list);
     
     free(name);
     free(interpreter);
@@ -165,4 +165,40 @@ void saveFilteredAlbumList_i(char *file_path)
     for(a = 0; file_path[a]!=';'; a++){}
     file_path[a] = '\0';
     if(!saveFilteredAlbumList(album_filtered_list, file_path)) printf("\033[0;31mError saving\033[0;37m\n");
+}
+
+void changeAlbumRecord(char *change_list)
+{
+    char *name        = (char *)malloc(sizeof(char)*SMALL_BUFFER);
+    char *interpreter = (char *)malloc(sizeof(char)*SMALL_BUFFER);
+    char *year        = (char *)malloc(sizeof(char)*SMALL_BUFFER);
+    char *genre       = (char *)malloc(sizeof(char)*SMALL_BUFFER);
+    char *score       = (char *)malloc(sizeof(char)*SMALL_BUFFER);
+    album_t *album;
+    int change_list_position = 0;
+    
+    readWold(&change_list[change_list_position], name         , &change_list_position);
+    readWold(&change_list[change_list_position], interpreter  , &change_list_position);
+    readWold(&change_list[change_list_position], year         , &change_list_position);
+    readWold(&change_list[change_list_position], genre        , &change_list_position);
+    readWold(&change_list[change_list_position], score        , &change_list_position);
+    album = getAlbum(album_list, name);
+
+    if(interpreter[0]!='-') strcpy(album->interpreter, interpreter);
+    if(genre      [0]!='-') strcpy(album->genre      , genre      );
+    if(year       [0]!='-') album->year  = atof(year )             ;
+    if(score      [0]!='-') album->score = atof(score)             ;
+
+    printfAlbum(album);
+    
+    free(name);
+    free(interpreter);
+    free(year);
+    free(genre);
+    free(score);  
+}
+
+void printFilteredAlbumList_i()
+{
+    printFilteredAlbumList(album_filtered_list);
 }

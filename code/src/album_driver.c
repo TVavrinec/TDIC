@@ -122,6 +122,7 @@ void delAlbum(album_t *album)
 album_t *loadFile(char *file_path)
 {
 	FILE *file = openFile(file_path, "r");
+	if(file == NULL) return NULL;
 	album_t *frst_album = loadAlbum(NULL, file, file_path);
 	album_t *new_album = frst_album;
 	while(new_album->info != endFile)
@@ -166,7 +167,7 @@ void controllPrintfAllAlbums(album_t *album)
 	printf("next %15p - prev %15p\n\n", album->next, album->prev);
 }
 
-album_t *sortAlbums(album_t *first_album, int compare_faktor, bool sort_dir)
+album_t *sortAlbums(album_t *first_album, album_factor compare_faktor, bool sort_dir)
 {
 	album_t *album = first_album;
 	int switch_count = 1;
@@ -205,6 +206,11 @@ bool saveAlbumsList(album_t *album, char *file_path)
 
 void printfAlbum(album_t *album)
 {
+	if(album == NULL) 
+	{
+		printf("\033[0;33malbum is not exist\033[0;37m\n");
+		return;
+	}
 	printf("\033[4m%36s - %25s - %4d - %20s -", album->name, album->interpreter, album->year, album->genre);
 	(album->score<3) ? printf("\033[0;33m\033[4m %5.2f\n\n", album->score) : (album->score<8)? printf("\033[0;32m\033[4m %5.2f\n", album->score) : printf("\033[0;31m\033[4m %5.2f\n", album->score);
 }

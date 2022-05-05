@@ -44,7 +44,7 @@ album_list_t *getAlbumSortedList(album_t *album_list, album_compare_prototype_t 
     return list;
 }
 
-void printAlbumList(album_list_t *list)
+void printFilteredAlbumList(album_list_t *list)
 {
     if(list == NULL)
     {
