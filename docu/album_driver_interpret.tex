@@ -6,7 +6,7 @@ bool readWold(char *buffer, char *word, int *length);
 int getComperFaktor(char *compare_faktor);
 bool getComperDirectory(char *compare_faktor);
 \end{lstlisting}
-Tyto funkce slouží pro zvýšení přehlednosti kódu a jejich název je podle mě plně vystihuje.
+Tyto funkce slouží pro zvýšení přehlednosti kódu a jejich deklarace je podle mě plně vystihuje.
 
 \subsection{Public funkce}
 \begin{lstlisting}[style=CStyle]
@@ -17,7 +17,7 @@ Tyto funkce slouží pro zvýšení přehlednosti kódu a jejich název je podle
 */
 void loadFile_i(char *file_path);
 \end{lstlisting}
-Načte databázi ze souboru na adrese zadané v předané textu, který nejprve zkontroluje.
+Načte databázi ze souboru na adrese zadané v předaném textu, který nejprve zkontroluje.
 Pro pohodlnost můžete využívat výchozí soubor na adrese "output/album\_list.csv" pomocí parametru " .".\\ 
 Příklad volání: "load-file output/album\_list.csv" nebo "load-file ."
 
@@ -28,7 +28,7 @@ Příklad volání: "load-file output/album\_list.csv" nebo "load-file ."
 */
 void delAlbum_i(char *album_name);
 \end{lstlisting}
-Vymaže z databáze album jehož jméno jste zadali\\ 
+Vymaže z databáze album, jehož jméno jste zadali\\ 
 Příklad volání: "del-album Vlasy" pro smazání alba s názvem Vlasy.
 
 \begin{lstlisting}[style=CStyle]
@@ -104,7 +104,7 @@ Příklad volání: "album-count".
 void getAlbum_i(char *name);
 \end{lstlisting}
 Vypíše záznam o albu zadaného jména.
-Předpokládá že jméno slouží jako jednoznační identifikátor alba.\\ 
+Předpokládá, že jméno slouží jako jednoznačný identifikátor alba.\\ 
 Příklad volání: "album Vlasy" pro výpis záznamu o albu Vlasy.
 
 \begin{lstlisting}[style=CStyle]
@@ -120,8 +120,8 @@ Příklad volání: "album Vlasy" pro výpis záznamu o albu Vlasy.
 */
 void getAlbumSortedList_i(char *album_prototype);
 \end{lstlisting}
-Vyfiltruje alba jejichž položky odpovídají zadaným.
-Pokud je třeba filtrovat jen podle některých položek zadejte místo položek nevyužitých "-".
+Vyfiltruje alba, jejichž položky odpovídají zadaným.
+Pokud je třeba filtrovat jen podle některých položek, zadejte místo položek nevyužitých "-".
 Všechny parametry musí být vždy odděleny mezerou.\\ 
 Příklad volání: "filter-album - - 2003 - -" pro vyfiltrovat všech alb z roku 2003.
 
@@ -133,8 +133,8 @@ Příklad volání: "filter-album - - 2003 - -" pro vyfiltrovat všech alb z rok
 */
 void saveFilteredAlbumList_i(char *file_path);
 \end{lstlisting}
-Uloží vyfiltrovaná alba do souboru který je předán v parametru.
-Opět vze použít "." namísto "output/filtered\_list.csv" jakožto výchozí soubor.\\ 
+Uloží vyfiltrovaná alba do souboru, který je předán v parametru.
+Opět lze použít "." namísto "output/filtered\_list.csv" jakožto výchozí soubor.\\ 
 Příklad volání: "save-filter output/filtered\_list.csv" nebo "save-filter .".
 \newpage
 \begin{lstlisting}[style=CStyle]
@@ -151,7 +151,7 @@ Příklad volání: "save-filter output/filtered\_list.csv" nebo "save-filter ."
 void changeAlbumRecord(char *change_list);
 \end{lstlisting}
 Přepíše kteroukoli položku alba krom jména alba, podle kterého identifikuje upravované album.
-Parametru které mají zůstat stejné budou nahrazeny pomlčkou "-".\\ 
+Parametry, které mají zůstat stejné, budou nahrazeny pomlčkou "-".\\ 
 Příklad volání: "change-album Vlasy - - - 8" pro změnu původního hodnocení alba "Vlasy" na hodnocení 8. 
 
 \begin{lstlisting}[style=CStyle]
@@ -161,5 +161,5 @@ Příklad volání: "change-album Vlasy - - - 8" pro změnu původního hodnocen
 */
 void printFilteredAlbumList_i();
 \end{lstlisting}
-Vypíše všechna alba která která jsou aktuálně vyfiltrovaná.\\ 
+Vypíše všechna alba, která která jsou aktuálně vyfiltrovaná.\\ 
 Příklad volání: "print-filter ". 
