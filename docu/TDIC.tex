@@ -51,18 +51,13 @@
 \definecolor{tabGreen}{rgb}{0, 1, 0.1}
 \definecolor{tabYellow}{rgb}{0, 1, 1}
 \begin{document}
-\begin{lstlisting}[style=CStyle]
-    bool itsANmber(char sim);
-    bool itsAText(char sim);
-    bool itsASpecialSymbol(char sim);
-\end{lstlisting}
-
 \section{TDIC (Terminál Database Interpretre Calculator)}
 TDIC je terminálový program schopný primitivní práce s databází alb a také je schopen počítat matematické výrazy.
 Databáze je realizovaná lineárním seznamem, v němž každý prvek ukazuje na předchozí a na následující prvek.
 Z terminálového okna je uživatel schopen načíst databázi ze souboru .csv se správnou strukturou.
 Dále je možné setřídit seznam dle libovolného parametru, vyfiltrovat podle jednoho nebo více parametrů, spočítat množství záznamů, přidat, odebrat nebo změnit záznam a "databázi" opět uložit do souboru .csv.
-Výsledek filtru je také možno uložit do samostatného souboru .csv.
+Výsledek filtru je také možno uložit do samostatného souboru .csv.\\
+Celí projekt je také dostupní na adrese \url{https://github.com/TVavrinec/TDIC}
 
 TDIC se skládá z několika souborů, které mají na starost řešení logických celků.
 Jednotlivé soubory obsahují dva typy funkcí, "private" a "public".
