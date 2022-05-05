@@ -5,27 +5,28 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct cell_t
-{
-    char text[32];
-    double number;
-    int type;
-    int index;
-}cell_t;
-
-enum cell_type 
+typedef enum  
 {
     anything = 0,
     number,      
     text,        
-};
+}cell_type;
 
-enum call_end
+typedef enum
 {
     normal = 0,
     endLine,
     endFile,
-};
+}call_end;
+
+typedef struct cell_t
+{
+    char text[32];
+    double number;
+    cell_type type;
+    call_end index;
+}cell_t;
+
 
 //private
 

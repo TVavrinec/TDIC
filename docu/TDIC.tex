@@ -1,0 +1,119 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{filecontents}
+\usepackage{siunitx}
+\usepackage[table]{xcolor}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{color} % balíček pro obarvování textů
+\usepackage{xcolor}  % zapne možnost používání barev, mj. pro \definecolor
+\usepackage{listings}
+\usepackage[total={175mm,230mm}, top=23mm, left=20mm, includefoot]{geometry}
+\usepackage{pgfplots}
+\usepackage{blindtext}
+\usepackage{subfiles}
+\usepackage{bookmark}
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={green!50!black},
+    urlcolor={blue!80!black}
+}
+
+\definecolor{main-color}{rgb}{0.6627, 0.7176, 0.7764}
+\definecolor{back-color}{rgb}{0.1686, 0.1686, 0.1686}
+\definecolor{string-color}{rgb}{0.3333, 0.5254, 0.345}
+\definecolor{key-color}{rgb}{0.8, 0.47, 0.196}
+\definecolor{mBlue}{rgb}{0, 1, 1}
+
+
+\usepackage{listings}
+
+\lstdefinestyle{CStyle}
+{
+    language = C++,
+    basicstyle = {\ttfamily \footnotesize \color{main-color}},
+    backgroundcolor = {\color{back-color}},
+    stringstyle = {\color{string-color}},
+    keywordstyle = {\color{key-color}},
+    keywordstyle = [2]{\color{white}},
+    keywordstyle = [3]{\color{yellow}},
+    keywordstyle = [4]{\color{teal}},
+    keywordstyle = [5]{\color{mBlue}},
+    otherkeywords = {;,<<,>>,++, readed_number_t, album_t, album_compare_prototype_t, FILE, cell_type, call_end, album_list_t, album_factor}, %cell_t,
+    morekeywords = [2]{;},
+    morekeywords = [3]{<<,>>},
+    morekeywords = [5]{cell_type, call_end, album_factor},
+    morekeywords = [4]{++, cell_t, readed_number_t, album_t, album_compare_prototype_t, album_list_t},
+}
+
+\definecolor{tabGreen}{rgb}{0, 1, 0.1}
+\definecolor{tabYellow}{rgb}{0, 1, 1}
+\begin{document}
+
+\section{TDIC (Terminál Database Interpretre Calculator)}
+TDIC je terminálový program schopný primitivní práce s databází alb a také je schopen počítat matematické výrazy.
+Databáze je realizovaná lineárním seznamem, v němž každý prvek ukazuje na předchozí a na následující prvek.
+Z terminálového okna je uživatel schopen načíst databázi ze souboru .csv se správnou strukturou.
+Dále je možné setřídit seznam dle libovolného parametru, vyfiltrovat podle jednoho nebo více parametrů, spočítat množství záznamů, přidat, odebrat nebo změnit záznam a "databázi" opět uložit do souboru .csv.
+Výsledek filtru je také možno uložit do samostatného souboru .csv.
+
+TDIC se skládá z několika souborů, které mají na starost řešení logických celků.
+Jednotlivé soubory obsahují dva typy funkcí, "private" a "public".
+Private funkce jsou přístupné jen z daného souboru, když jsem odkázán na čisté C a nemám private metody, tak je to hold takhle.
+
+\section{Obsluha programu}
+\subsection{Početní část}
+Při používání početní části programu lze libovolný numerický příklad zadat v přirozené podobě \\např. \(2/4-5*(4+2/(2+3))\) program vyhodnotí jako \(-21.50\).
+Implementované operátory jsou "+", "-", "*", "/" a "\%" jakož to modulo.
+Krom zmíněných znamének může příklad obsahovat čísla a libovolné množství závorek.
+Výsledek se zobrazí jako prosté číslo v desetinném tvaru s přesností na dvě desetinná místa.
+Pokud při zadávání dojde k chybě v zadání (např. neuzavřete závorku nebo se v příkladu vyskytne nematematický symbol) program vypíše "bad syntax in " a část příkladu, ve která našel chybu.
+Příklad přesto  vyhodnotí a výsledek vypíše hned pod chybovou hlášku, pokud jste tedy jen zapomněli uzavřít závorku, nemusíte příklad psát celý znova.
+
+\subsection{databázová část}
+\begin{figure}[H]
+    \begin{minipage}[t]{0.3\textwidth}
+        Pokud zadáte funkci, která není definovaná, vypíše se "unknown function".
+        Konkrétně jsou funkce popsány v následující kapitole.
+        Pokud funkce přebírá parametry budou vždy odděleni mezerou. 
+        "\_i" v názvu funkce značí, že jde o verzi funkce, která je určena pro parser a existuje i stejná funkce bez "\_i" která je součástí "\_i" a slouží pro použití uvnitř programu.
+    \end{minipage}
+    \hfill
+	\begin{minipage}[t]{0.65\textwidth}
+        \vspace{-10mm}
+        % \hspace{-13mm}
+        \begin{tabular}{|l|l|}
+            \hline
+            \multicolumn{2}{|c|}{Implementované\;funkce} \\ \hline 
+            \rowcolor{tabGreen}
+            název funkce v konzoly                              & název funkce uvnitř programu   \\ \hline    
+            load-file $<$file\_path$>$                          & loadFile\_i                    \\ \hline    \rowcolor{tabYellow}
+            del-album                                           & delAlbum\_i                    \\ \hline    
+            save-album-list $<$file\_path$>$                    & saveAlbumsList\_i              \\ \hline    \rowcolor{tabYellow}
+            list                                                & printfAllAlbums\_i             \\ \hline    
+            add-album $<$album data$>$                          & addNewAlbum\_i                 \\ \hline    \rowcolor{tabYellow}
+            sort-albums $<$compare\_faktor$>$ $<$sort\_dir$>$   & sortAlbums\_i                  \\ \hline    
+            album-count                                         & getAlbumCount\_i               \\ \hline    \rowcolor{tabYellow}
+            album $<$name$>$                                    & getAlbum\_i                    \\ \hline    
+            filter-album $<$filter seting$>$                    & getAlbumSortedList\_i          \\ \hline    \rowcolor{tabYellow}
+            save-filter $<$file\_path$>$                        & saveFilteredAlbumList\_i       \\ \hline    
+            change-album $<$name$>$ $<$changing param$>$        & changeAlbumRecord              \\ \hline    \rowcolor{tabYellow}
+            print-filter                                        & printFilteredAlbumList\_i      \\ \hline    
+        \end{tabular}
+    \end{minipage}
+\end{figure}
+
+\newpage
+\input{album_driver_interpret.tex}
+
+\input{language.tex}
+
+\input{album_driver.tex}
+
+\input{album_filter.tex}
+
+\input{csv_manager.tex}
+
+\end{document}

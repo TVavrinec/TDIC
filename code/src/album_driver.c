@@ -90,9 +90,9 @@ int compareAlbums(album_t *a, album_t *b, int compare_faktor, bool sort_dir)
 
 //public ********************************************************************************************************************************************************
 
-album_t *addNewAlbum(album_t *album, char *name, char *interpreter, int year, char *genre, float score)
+album_t *addNewAlbum(album_t *album_list, char *name, char *interpreter, int year, char *genre, float score)
 {
-	album_t *prev = album->next;
+	album_t *prev = album_list->next;
 	while(prev->next != NULL)
 	{
 		prev = prev->next;
@@ -105,7 +105,7 @@ album_t *addNewAlbum(album_t *album, char *name, char *interpreter, int year, ch
 	strcpy(new_album->genre, genre);
 	new_album->score = score;
 
-	new_album->info = new;
+	new_album->info = 0;
 	new_album->prev = prev;
 	if(prev != NULL) prev->next = new_album;
 	return new_album;
@@ -146,13 +146,13 @@ album_t *switchAlbums(album_t *a, album_t *b)
 	return a;
 }
 
-int getAlbumCount(album_t *album)
+int getAlbumCount(album_t *album_list)
 {
 	int count = 1;
-	while(album->next != NULL)
+	while(album_list->next != NULL)
 	{
 		count++;
-		album = album->next;
+		album_list = album_list->next;
 	}
 	return count;
 }

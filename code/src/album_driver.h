@@ -55,8 +55,9 @@ bool saveAlbumsList(album_t *album, char *file_path);
 
 /*
 	add new album to album list "album" with name "name", interpreter "interpreter", year "year", genre "genre", score "score"
+	return pointier to the new album
 */
-album_t *addNewAlbum(album_t *album, char *name, char *interpreter, int year, char *genre, float score);
+album_t *addNewAlbum(album_t *album_list, char *name, char *interpreter, int year, char *genre, float score);
 
 /*
 	remove album on address "album" from the album list and deleted it
@@ -85,14 +86,14 @@ album_t *sortAlbums(album_t *first_album, album_factor compare_factor, bool sort
 void printfAlbum(album_t *album);
 
 /*
-    print all albums in list start it on address "album"
+    print all albums in list start it on address "album_list"
 */
-void printfAllAlbums(album_t *album);
+void printfAllAlbums(album_t *album_list);
 
 /*
     calculate the count of albums in the list starting with address "album"
 */
-int getAlbumCount(album_t *album);
+int getAlbumCount(album_t *album_list);
 
 /*
 	return address to the album with a name "name" from the album list "album list"
